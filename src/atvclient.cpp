@@ -709,7 +709,7 @@ int main(int argc, char **argv) {
   
   int led_brightness = 1;
  
-  while ((c = getopt (argc, argv, "mBi:b:s:H:hd")) != -1)
+  while ((c = getopt (argc, argv, "xmBi:b:s:H:hd")) != -1)
   switch (c) {
     case 'x':
       direct_exit = 1; break;
