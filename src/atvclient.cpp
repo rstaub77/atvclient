@@ -130,6 +130,7 @@
 
 bool multi_mode = 0;
 bool debug = 0;
+bool direct_exit = 0;
 int idle_mode = LEDMODE_WHITE;
 int button_mode = LEDMODE_OFF;
 int special_mode = LEDMODE_AMBER;
@@ -678,8 +679,9 @@ void handle_special(struct ir_command command) {
 
 void usage(int argc, char **argv) {
   if (argc >=1) {
-    printf("Usage: %s [-i mode] [-s mode] [-H mode] [-b mode] [-B] [-h]\n", argv[0]);
+    printf("Usage: %s [-i mode] [-s mode] [-H mode] [-b mode] [-B] [-h] [-x]\n", argv[0]);
     printf("  Options:\n");
+    printf("      -x\tSets idle LED mode then exits\n");
     printf("      -m\tEnable multi-remote support.\n");
     printf("      -i\tChange the LED mode for when the receiver is idle.\n");
     printf("      -b\tChange the LED mode for when the receiver is receiving a button press.\n");
@@ -709,6 +711,8 @@ int main(int argc, char **argv) {
  
   while ((c = getopt (argc, argv, "mBi:b:s:H:hd")) != -1)
   switch (c) {
+    case 'x':
+      direct_exit = 1; break;
     case 'm':
       multi_mode = 1; break;
     case 'i':
@@ -744,6 +748,12 @@ int main(int argc, char **argv) {
   }
   
   set_led_brightness(led_brightness);
+
+  // Simple idle LED setting then exits
+  if (direct_exit == 1) {
+    set_led(idle_mode)
+    exit(0);
+  }
   
   memset(&timeoutCommand, 0, sizeof(timeoutCommand));
   
